@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     private String uID;
 
     static final int SCAN_QR_CODE = 1; //request code for scan QR code activity
+
+    static final int WAIT_FOR_USER = 2; //request code for scan QR code activity
+
 
     //Give your SharedPreferences file a name and save it to a static variable
     public static final String PREFS_NAME = "MyPrefsFile";
@@ -49,9 +53,13 @@ public class MainActivity extends AppCompatActivity {
             //go to scan QR activity
 
             // Here we start the next activity, and wait for the result
-            Intent intent = new Intent();
+            /*Intent intent = new Intent();
             intent.setClass(MainActivity.this, ScanQRActivity.class);
-            startActivityForResult(intent, SCAN_QR_CODE);
+            startActivityForResult(intent, SCAN_QR_CODE);*/
+
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, WaitActivity.class);
+            startActivityForResult(intent, WAIT_FOR_USER);
 
         }
 
@@ -111,6 +119,23 @@ public class MainActivity extends AppCompatActivity {
                 IP = x[0];
                 port = x[1];
                 room = x[2];
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                //nothing scanned
+            }
+        }
+        else if (requestCode == WAIT_FOR_USER) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                //scanned QR code
+                String result = data.getStringExtra("result");
+                String[] x = result.split("::");
+                IP = x[0];
+                port = x[1];
+                room = x[2];
+
+                TextView quizRoom = (TextView) findViewById(R.id.quizRoom);
+                quizRoom.setText("Room : " + room);
             }
             else if (resultCode == RESULT_CANCELED) {
                 //nothing scanned
