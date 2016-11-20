@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwd = (EditText) findViewById(R.id.pass);
 
 
-                Button signup = (Button) findViewById(R.id.signupButton);
+        Button signup = (Button) findViewById(R.id.signupButton);
         signup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
